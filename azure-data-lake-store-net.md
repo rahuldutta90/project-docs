@@ -5,15 +5,15 @@
 
 * **An Azure subscription**. See [Get Azure free trial](https://azure.microsoft.com/pricing/free-trial/).
 
-* **Azure Data Lake Store account**. For instructions on how to create an account, see [Get started with Azure Data Lake Store](data-lake-store-get-started-portal.md)
+* **Azure Data Lake Store account**. For instructions on how to create an account, see [Get started with Azure Data Lake Store](https://docs.microsoft.com/en-us/azure/data-lake-store/data-lake-store-get-started-portal)
 
 * **Azure Active Directory Application**. In this tutorial we use an Azure AD application client secret to retrieve an Azure Active Directory token (service-to-service authentication). We use this token to create a Data Lake Store client object to perform operations file and directory operations. For instructions on how to authenticate with Azure Data Lake Store using the client secret, we perform the following high-level steps:
                                           
-      1. Create an Azure AD web application.
-      2. Retrieve the client ID, client secret, and token endpoint for the Azure AD web application. See [Create an Active Directory Application](data-lake-store-end-user-authenticate-using-active-directory.md.
-      3. Configure access for the Azure AD web application on the Data Lake Store file/folder that you want to access from the .NET application you are creating.
-         For instructions on how to perform these steps, see [Create an Active Directory application](data-lake-store-authenticate-using-active-directory.md).
-         Azure Active Directory provides other options as well to retrieve a token. You can pick from a number of different authentication mechanisms to suit your scenario, for example, an application running in a browser, an application distributed as a desktop application, or a server application running on-premises or in an Azure virtual machine. You can also pick from different types of credentials like passwords, certificates, 2-factor authentication, etc. In addition, Azure Active Directory allows you to synchronize your on-premises Active Directory users with the cloud. For details, see [Authentication Scenarios for Azure Active Directory](../active-directory/active-directory-authentication-scenarios.md). 
+1. Create an Azure AD web application.
+2. Retrieve the client ID, client secret, and token endpoint for the Azure AD web application.
+3. Configure access for the Azure AD web application on the Data Lake Store file/folder that you want to access from the .NET application you are creating.
+   For instructions on how to perform these steps, see [Create an Active Directory application](https://docs.microsoft.com/en-us/azure/data-lake-store/data-lake-store-authenticate-using-active-directory).
+   Azure Active Directory provides other options as well to retrieve a token. You can pick from a number of different authentication mechanisms to suit your scenario, for example, an application running in a browser, an application distributed as a desktop application, or a server application running on-premises or in an Azure virtual machine. You can also pick from different types of credentials like passwords, certificates, 2-factor authentication, etc. In addition, Azure Active Directory allows you to synchronize your on-premises Active Directory users with the cloud. For details, see [Authentication Scenarios for Azure Active Directory](https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-authentication-scenarios). 
                                           
 
 
@@ -27,7 +27,7 @@ The code sample available [on GitHub](https://github.com/azure-samples/data-lake
                                           
          * Microsoft.Azure.DataLake.Store - This tutorial uses v0.1.0-beta.
          * Microsoft.Rest.ClientRuntime.Azure.Authentication - This tutorial uses v2.3.1.
-   4. If you want to install these packages for a fresh project, then make sure that **Package source** is set to **nuget.org** and that **Include prerelease** check box is selected. Under **Browse** search **adls**. Select and Install `Microsoft.Azure.DataLake.Store`. It will install all other necessary packages.
+   3. If you want to install these packages for a fresh project, then make sure that **Package source** is set to **nuget.org** and that **Include prerelease** check box is selected. Under **Browse** search **adls**. Select and Install `Microsoft.Azure.DataLake.Store`. It will install all other necessary packages.
 
 ### Add the application code
 There are three main parts to the code.
