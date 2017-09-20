@@ -12,24 +12,24 @@
 1. Create an Azure AD web application.
 2. Retrieve the client ID, client secret, and token endpoint for the Azure AD web application.
 3. Configure access for the Azure AD web application on the Data Lake Store file/folder that you want to access from the .NET application you are creating.
-   For instructions on how to perform these steps, see [Create an Active Directory application](https://docs.microsoft.com/en-us/azure/data-lake-store/data-lake-store-authenticate-using-active-directory).
-   Azure Active Directory provides other options as well to retrieve a token. You can pick from a number of different authentication mechanisms to suit your scenario, for example, an application running in a browser, an application distributed as a desktop application, or a server application running on-premises or in an Azure virtual machine. You can also pick from different types of credentials like passwords, certificates, 2-factor authentication, etc. In addition, Azure Active Directory allows you to synchronize your on-premises Active Directory users with the cloud. For details, see [Authentication Scenarios for Azure Active Directory](https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-authentication-scenarios). 
-                                          
+   
+For instructions on how to perform these steps, see [Create an Active Directory application](https://docs.microsoft.com/en-us/azure/data-lake-store/data-lake-store-authenticate-using-active-directory).
+
+Azure Active Directory provides other options as well to retrieve a token. You can pick from a number of different authentication mechanisms to suit your scenario, for example, an application running in a browser, an application distributed as a desktop application, or a server application running on-premises or in an Azure virtual machine. You can also pick from different types of credentials like passwords, certificates, 2-factor authentication, etc. In addition, Azure Active Directory allows you to synchronize your on-premises Active Directory users with the cloud. For details, see [Authentication Scenarios for Azure Active Directory](https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-authentication-scenarios). 
 
 
 ## Create a .NET application
-The code sample available [on GitHub](https://github.com/azure-samples/data-lake-store-adls-dot-net-get-started/) walks you through the process of creating files in the store, downloading a file, renaming files and deleting some files in the store. This section of the article walk you through the main parts of the code.
-1. Download the sample code from above link. 
-2. Open Visual Studio and open AdlsSDKGettingStarted.sln.
-3. The nuget packages is already added to your project. Verify that.
-   1. Right-click the project name AdlsSDKGettingStarted in the Solution Explorer and click **Manage NuGet Packages**.
-   2. In the **Nuget Package Manager** tab under **Installed** you will see packages:
-                                          
-         * Microsoft.Azure.DataLake.Store - This tutorial uses v0.1.0-beta.
-         * Microsoft.Rest.ClientRuntime.Azure.Authentication - This tutorial uses v2.3.1.
-   3. If you want to install these packages for a fresh project, then make sure that **Package source** is set to **nuget.org** and that **Include prerelease** check box is selected. Under **Browse** search **adls**. Select and Install `Microsoft.Azure.DataLake.Store`. It will install all other necessary packages.
 
-### Add the application code
+The code sample available [on GitHub](https://github.com/azure-samples/data-lake-store-adls-dot-net-get-started/) walks you through the process of creating files in the store, downloading a file, renaming files and deleting some files in the store. This section of the article walk you through the main parts of the code.
+
+Create a Console Application (for this tutorial we create .NET framework 4.5.2). For instructions on how to create a .NET project using Visual Studio, see [here](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/hello-world-your-first-program).
+
+## Add Nuget dependencies
+   1. Right-click the project name in the Solution Explorer and click **Manage NuGet Packages**.
+   2. In the **Nuget Package Manager** window make sure that **Package source** is set to **nuget.org** and that **Include prerelease** check box is selected. 
+   4. Under **Browse** search **adls**. Select and Install `Microsoft.Azure.DataLake.Store`. It will install all other necessary packages.
+
+## Add the application code
 There are three main parts to the code.
 
 1. Obtain the Azure Active Directory token
@@ -55,26 +55,31 @@ Creating an AdlsClient object requires you to specify the Data Lake Store accoun
     // Create ADLS client object
     AdlsClient client = AdlsClient.CreateClient(clientAccountPath, clientCreds);
 
-### Step 3: Use the AdlsClient to perform file and directory operations
+#### Step 3: Use the AdlsClient to perform file and directory operations
 The code below contains example snippets of some common operations.
 
 Note that files are read from and written into using standard .NET streams. This means that you can layer any of the .NET streams on top of the Data Lake Store streams to benefit from standard .NET functionality.
 
-     // create file and write some content
-     string fileName = "/Test/testFilename1.txt";
-     
-     // Create a file
-     using (var streamWriter = new StreamWriter(client.CreateFile(fileName, IfExists.Overwrite)))
-     {
-         streamWriter.WriteLine("This is test data to write");
-         streamWriter.WriteLine("This is line 2");
-     }
+#####Create file
+
+    string fileName = "/Test/testFilename1.txt";
+        
+    // Create a file - automatically creates any parent directories that don't exist
+    using (var streamWriter = new StreamWriter(client.CreateFile(fileName, IfExists.Overwrite)))
+    {
+        streamWriter.WriteLine("This is test data to write");
+        streamWriter.WriteLine("This is line 2");
+    }
+
+#####Append existing file
 
      // Append to existing file
      using (var streamWriter = new StreamWriter(client.GetAppendStream(fileName)))
      {
          streamWriter.WriteLine("This is the added line");
      }
+
+#####Read file
 
      //Read file contents
      using (var readStream = new StreamReader(client.GetReadStream(fileName)))
@@ -86,19 +91,28 @@ Note that files are read from and written into using standard .NET streams. This
          }
      }
 
+#####Retrieve File/Directory properties
+
      // Get the properties of the file
-     var diren = client.GetDirectoryEntry(fileName);
-     PrintDirectoryEntry(diren);
+     var directoryEntry = client.GetDirectoryEntry(fileName);
+     PrintDirectoryEntry(directoryEntry);
+
+
+#####Rename file
 
      // Rename a file
      string destFilePath = "/Test/testRenameDest3.txt";
      Console.WriteLine(client.Rename(fileName, destFilePath, true));
 
+#####Enumerate directory contents
+
      // Enumerate directory
-     foreach (var dir in client.EnumerateDirectory("/Test"))
+     foreach (var entry in client.EnumerateDirectory("/Test"))
      {
-         PrintDirectoryEntry(dir);
+         PrintDirectoryEntry(entry);
      }
+
+#####Delete directory
 
      // Delete a dirtectory and all it's subdirectories and files
      client.DeleteRecursive("/Test");
