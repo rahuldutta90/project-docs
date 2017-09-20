@@ -25,9 +25,11 @@ The code sample available [on GitHub](https://github.com/azure-samples/data-lake
 Create a Console Application (for this tutorial we create .NET framework 4.5.2). For instructions on how to create a .NET project using Visual Studio, see [here](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/hello-world-your-first-program).
 
 ## Add Nuget dependencies
+You have to add two nuget packages for this tutorial: `Microsoft.Azure.DataLake.Store` for ADLS .NET SDK and `Microsoft.Rest.ClientRuntime.Azure.Authentication` for authentication.
    1. Right-click the project name in the Solution Explorer and click **Manage NuGet Packages**.
    2. In the **Nuget Package Manager** window make sure that **Package source** is set to **nuget.org** and that **Include prerelease** check box is selected. 
-   4. Under **Browse** search **adls**. Select and Install `Microsoft.Azure.DataLake.Store`. It will install all other necessary packages.
+   4. Under **Browse** search **adls**. Select and Install `Microsoft.Azure.DataLake.Store` (version 0.1.1-beta).
+   5. Similarly search **Microsoft.Rest.ClientRuntime.Azure.Authentication**. Select and install `Microsoft.Rest.ClientRuntime.Azure.Authentication` (version 2.3.1).
 
 ## Add the application code
 This section of the article walk you through the main parts of the code. There are three main parts to the code.
